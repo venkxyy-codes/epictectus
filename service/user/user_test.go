@@ -1,15 +1,15 @@
 package user
 
 import (
+	"epictectus/contract"
+	"epictectus/domain"
+	"epictectus/repo"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"net/http/httptest"
 	"testing"
-	"to-do/contract"
-	"to-do/domain"
-	"to-do/repo"
 )
 
 func Test_userService_GetUserIdByUserName(t *testing.T) {
