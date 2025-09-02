@@ -1,0 +1,21 @@
+APP_NAME: user-mgmt
+TIMEZONE: "Asia/Kolkata"
+HTTP:
+  LISTEN_ADDRESS: ":9000"
+  DEBUG: true
+POSTGRES:
+  DSN: "host=localhost user=postgres password=postgres dbname=user_mgmt port=5432 sslmode=disable"
+  MAX_OPEN_CONNS: 10
+  MAX_IDLE_CONNS: 5
+JWT:
+  ISSUER: "user-mgmt"
+  AUDIENCE: "admin-panel"
+  ACCESS_TOKEN_TTL: 15m
+  SECRET: "CHANGE_ME"
+GOOGLE:
+  CLIENT_ID: ""
+  CLIENT_SECRET: ""
+  REDIRECT_URL: "http://localhost:9000/v1/auth/google/callback"
+  ALLOWED_DOMAINS: ["appsforbharat.com"]
+OBS:
+  NEW_RELIC_APP_NAME: "afb-user-mgmt"
