@@ -1,9 +1,9 @@
 package repo
 
 import (
+	"epictectus/domain"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/mock"
-	"to-do/domain"
 )
 
 type UserRepoMock struct {

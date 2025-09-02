@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"e/commands"
+	"epictectus/commands"
+	"epictectus/logger"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
-	"to-do/logger"
 )
 
 func main() {

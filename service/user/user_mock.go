@@ -1,9 +1,9 @@
 package user
 
 import (
+	"epictectus/contract"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/mock"
-	"to-do/contract"
 )
 
 type UserServiceMock struct {

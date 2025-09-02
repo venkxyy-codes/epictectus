@@ -1,13 +1,13 @@
 package handler
 
 import (
+	"epictectus/contract"
+	"epictectus/service/user"
+	"epictectus/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"to-do/contract"
-	"to-do/service/user"
-	"to-do/utils"
 )
 
 type UserHandler struct {
