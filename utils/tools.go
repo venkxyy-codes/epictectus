@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"regexp"
 )
 
@@ -30,4 +31,16 @@ func ValidatePassword(password string) string {
 		return "err-password-must-contain-atleast-1-special-character"
 	}
 	return ""
+}
+
+func GetStringValueFromMap(m map[string]interface{}, key string) (string, error) {
+	val, ok := m[key]
+	if !ok {
+		return "", fmt.Errorf("err-key-%v-not-found-in-map", key)
+	}
+	valString, isString := val.(string)
+	if !isString {
+		return "", fmt.Errorf("err-key-%v-is-not-a-string", key)
+	}
+	return valString, nil
 }
