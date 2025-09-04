@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"regexp"
+	"time"
 )
 
 // ValidatePhoneNumber validates if the given phone number is a valid Indian number (10 digits).
@@ -43,4 +44,9 @@ func GetStringValueFromMap(m map[string]interface{}, key string) (string, error)
 		return "", fmt.Errorf("err-key-%v-is-not-a-string", key)
 	}
 	return valString, nil
+}
+
+func GetCurrentUtcTimeInIso8086() string {
+	now := time.Now().UTC()
+	return now.Format("2006-01-02 15:04:05")
 }
