@@ -1,9 +1,9 @@
 package router
 
 import (
+	"bitbucket.org/apps-for-bharat/gotools/blog"
 	"epictectus/config"
 	"github.com/gin-gonic/gin"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
 
 	"epictectus/handler"
@@ -11,6 +11,7 @@ import (
 )
 
 type Options struct {
+	Logger       blog.Logger
 	Conf         *config.Config
 	Dependencies *service.ServerDependencies
 }
@@ -32,15 +33,15 @@ func CorsMiddleware() gin.HandlerFunc {
 
 func InitRouter(opts Options) *gin.Engine {
 	router := gin.Default()
-	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Use(CorsMiddleware())
 
 	router.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 	userHandler := handler.NewUserHandler(opts.Dependencies.UserService)
+	pgHandler := handler.NewPaymentGatewayHandler(opts.Dependencies.PaymentGatewayService)
 	InitUserRouter(router, &userHandler)
+	InitPgRouter(router, &pgHandler)
 	return router
 }
 
@@ -49,4 +50,9 @@ func InitUserRouter(router *gin.Engine, handler *handler.UserHandler) {
 	v1.POST("sign-up", handler.SignUpUser)
 	v1.POST("login", handler.LoginUser)
 	//v1.POST("forgot-password", handler.ForgotPassword)
+}
+
+func InitPgRouter(router *gin.Engine, handler *handler.PgHandler) {
+	v1 := router.Group("epictectus/v1")
+	v1.POST("create-standard-payment-link", handler.CreateStandardPaymentLink)
 }
