@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
+	"epictectus/blog"
 	"epictectus/contract"
 	"epictectus/domain"
 	paymentGateway "epictectus/service/payment-gateway"

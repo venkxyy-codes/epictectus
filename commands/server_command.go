@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
 	"epictectus/appcontext"
+	"epictectus/blog"
 	"epictectus/config"
 	"epictectus/router"
 	"epictectus/service"

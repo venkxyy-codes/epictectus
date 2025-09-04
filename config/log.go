@@ -1,7 +1,7 @@
 package config
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
+	"epictectus/blog"
 	"os"
 )
 
