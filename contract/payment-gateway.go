@@ -7,6 +7,16 @@ import (
 	"strings"
 )
 
+type CreateStandardPaymentLink struct {
+	Amount          int64  `json:"amount"`
+	Currency        string `json:"currency"`
+	CustomerName    string `json:"customer_name"`
+	CustomerContact string `json:"customer_contact"`
+	CustomerEmail   string `json:"customer_email"`
+	NotifySms       string `json:"notify_sms"`
+	NotifyEmail     string `json:"notify_email"`
+}
+
 type CreateStandardPaymentLinkRequestRazorpay struct {
 	Amount          int64             `json:"amount"`
 	Currency        string            `json:"currency,omitempty"`
@@ -28,8 +38,8 @@ type CreateStandardPaymentLinkRequestRazorpay struct {
 	CallbackMethod string `json:"callback_method,omitempty"`
 }
 
-// Validate performs all request validations for a given payment provider.
-func (r *CreateStandardPaymentLinkRequestRazorpay) Validate(paymentProvider string) []utils.ValidationError {
+// Validate performs all request validations for the payment link creation
+func (r *CreateStandardPaymentLink) Validate(paymentProvider string) []utils.ValidationError {
 	errs := []utils.ValidationError{}
 
 	// payment provider check (must be present and valid)
@@ -59,7 +69,7 @@ func (r *CreateStandardPaymentLinkRequestRazorpay) Validate(paymentProvider stri
 	}
 
 	// basic customer sanity (optional fields; format checks can be tightened later)
-	if r.CustomerDetails.Email != "" && !strings.Contains(r.CustomerDetails.Email, "@") {
+	if r.CustomerEmail != "" && !strings.Contains(r.CustomerEmail, "@") {
 		errs = append(errs, utils.ValidationError{
 			Field:   "customer_email",
 			Message: "err-email-format-invalid",

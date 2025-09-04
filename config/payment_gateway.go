@@ -12,16 +12,16 @@ type RazorpayCredentials struct {
 	KeySecret string `env:"RAZORPAY_KEY_SECRET"`
 }
 
-func GetRazorpayCredentials() map[string]interface{} {
-	return map[string]interface{}{
-		"key_id":     os.Getenv("RAZORPAY_KEY_ID"),
-		"key_secret": os.Getenv("RAZORPAY_KEY_SECRET"),
+func GetRazorpayCredentials() RazorpayCredentials {
+	return RazorpayCredentials{
+		KeyId:     os.Getenv("RAZORPAY_KEY_ID"),
+		KeySecret: os.Getenv("RAZORPAY_KEY_SECRET"),
 	}
 }
 
-func GetRazorpayHttpConfig() map[string]interface{} {
-	return map[string]interface{}{
-		"host":                         os.Getenv("RAZORPAY_HOST"),
-		"create_payment_link_endpoint": os.Getenv("RAZORPAY_CREATE_PAYMENT_LINK_ENDPOINT"),
+func GetRazorpayHttpConfig() RazorpayHttpConfig {
+	return RazorpayHttpConfig{
+		Host:                      os.Getenv("RAZORPAY_HOST"),
+		CreatePaymentLinkEndpoint: os.Getenv("RAZORPAY_CREATE_PAYMENT_LINK_ENDPOINT"),
 	}
 }
