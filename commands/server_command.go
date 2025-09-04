@@ -21,8 +21,6 @@ func apiServerCommand() *cobra.Command {
 			appcontext.Init()
 			db := appcontext.GetDBClient()
 			fmt.Println(db)
-			blog.SetupLogger(config.GetLogConfig())
-			blog.SetLevel(config.GetLogConfig().Level)
 
 			serverDependencies := service.InstantiateServerDependencies()
 			r := router.InitRouter(router.Options{
