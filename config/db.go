@@ -1,5 +1,7 @@
 package config
 
+import "os"
+
 type DbConfig struct {
 	Host     string `yaml:"HOST" env:"DB_HOST"`
 	Username string `yaml:"USERNAME" env:"DB_USERNAME"`
@@ -26,6 +28,17 @@ func (dc *DbConfig) GetConnectionString() string {
 	//	}
 	//}
 	connectionString = "mongodb://localhost:27017"
+	//connectionString = "mongodb://app_user:app_password@127.0.0.1:27017/epictectus?authSource=epictectus&retryWrites=true"
 
 	return connectionString
+}
+
+func GetDbConfig() DbConfig {
+	return DbConfig{
+		Host:     os.Getenv("DB_HOST"),
+		Username: os.Getenv("DB_USERNAME"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Port:     os.Getenv("DB_PORT"),
+		DBName:   os.Getenv("DB_NAME"),
+	}
 }
