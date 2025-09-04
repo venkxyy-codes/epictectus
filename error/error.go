@@ -20,5 +20,6 @@ const (
 )
 
 var (
-	ErrInvalidRequest = errors.New(string(ClientError))
+	ErrValidationFailed = errors.New(string(ValidationError))
+	//ErrInvalidRequest = errors.New(string(ClientError))
 )
