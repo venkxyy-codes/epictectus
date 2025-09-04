@@ -1,7 +1,7 @@
 package router
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
+	"epictectus/blog"
 	"epictectus/config"
 	"github.com/gin-gonic/gin"
 	"net/http"

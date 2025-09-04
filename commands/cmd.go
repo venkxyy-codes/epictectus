@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
+	"epictectus/blog"
 	"epictectus/config"
 	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"

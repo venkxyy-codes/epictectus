@@ -1,9 +1,9 @@
 package crm
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
 	"context"
 	"encoding/json"
+	"epictectus/blog"
 	"epictectus/clients"
 	"epictectus/config"
 	"epictectus/contract"

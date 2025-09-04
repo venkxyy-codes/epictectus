@@ -1,10 +1,10 @@
 package payment_gateway
 
 import (
-	"bitbucket.org/apps-for-bharat/gotools/blog"
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"epictectus/blog"
 	"epictectus/clients"
 	"epictectus/config"
 	"epictectus/constants"
