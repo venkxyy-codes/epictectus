@@ -1,5 +1,3 @@
-bitbucket.org/apps-for-bharat/gotools/blog v1.114.0 h1:72fsDD1tO1fTAcDyWQyzUuyZAheujqtvvEsxF4oWBtQ=
-bitbucket.org/apps-for-bharat/gotools/blog v1.114.0/go.mod h1:tMizyHYkZHoHcybedzs6mXXNiCp5p1C/5n8YSTLNC5g=
 github.com/bsm/ginkgo/v2 v2.12.0 h1:Ny8MWAHyOepLGlLKYmXG4IEkioBysk6GpaRTLC8zwWs=
 github.com/bsm/ginkgo/v2 v2.12.0/go.mod h1:SwYbGRRDovPVboqFv0tPTcG1sN61LM1Z4ARdbAV9g4c=
 github.com/bsm/gomega v1.27.10 h1:yeMWxP2pV2fG3FgAODIY8EiRE3dy0aeFYt4l7wh6yKA=
