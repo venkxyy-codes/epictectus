@@ -52,7 +52,7 @@ func newDbClient() *mongo.Client {
 		return nil
 	}
 
-	log.Print("info-successfully-connected-to-db", "connection_string", connectionString)
+	log.Print("info-successfully-connected-to-db, ", "connection_string: ", connectionString)
 	return client
 }
 

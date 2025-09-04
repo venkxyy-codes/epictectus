@@ -1,9 +1,9 @@
 package commands
 
 import (
+	"bitbucket.org/apps-for-bharat/gotools/blog"
 	"epictectus/appcontext"
 	"epictectus/config"
-	"epictectus/logger"
 	"epictectus/router"
 	"epictectus/service"
 	"fmt"
@@ -15,7 +15,7 @@ func apiServerCommand() *cobra.Command {
 		Use:   "start_http",
 		Short: "Run the determine web server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			logger.Logger.Info("initialising server command")
+			fmt.Println("initialising server command")
 			globalConfig := config.GetConfig()
 
 			appcontext.Init()
@@ -24,6 +24,7 @@ func apiServerCommand() *cobra.Command {
 
 			serverDependencies := service.InstantiateServerDependencies()
 			r := router.InitRouter(router.Options{
+				Logger:       blog.GlobalLogger(),
 				Conf:         globalConfig,
 				Dependencies: serverDependencies,
 			})
