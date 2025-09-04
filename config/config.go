@@ -8,13 +8,15 @@ import (
 var appConfig *Config
 
 type Config struct {
-	AppName             string `yaml:"APP_NAME" env:"APP_NAME"`
-	AppPort             string `yaml:"APP_PORT" env:"APP_PORT"`
-	ENV                 string `yaml:"ENV" env:"ENVIRONMENT"`
-	DbConfig            DbConfig
-	RazorpayHttpConfig  RazorpayHttpConfig
-	RazorpayCredentials RazorpayCredentials
-	LogConfig           blog.LogConfig
+	AppName                string `yaml:"APP_NAME" env:"APP_NAME"`
+	AppPort                string `yaml:"APP_PORT" env:"APP_PORT"`
+	ENV                    string `yaml:"ENV" env:"ENVIRONMENT"`
+	DbConfig               DbConfig
+	RazorpayHttpConfig     RazorpayHttpConfig
+	RazorpayCredentials    RazorpayCredentials
+	LeadsquaredHttpConfig  LeadsquaredHttpConfig
+	LeadsquaredCredentials LeadsquaredCredentials
+	LogConfig              blog.LogConfig
 }
 
 func NewConfig() (*Config, error) {
@@ -44,11 +46,10 @@ func (c *Config) SetDefault() {
 
 func GetConfig() *Config {
 	return &Config{
-		ENV:      os.Getenv("ENV"),
-		DbConfig: GetDbConfig(),
-		AppName:  os.Getenv("APP_NAME"),
-		AppPort:  os.Getenv("APP_PORT"),
-		//RazorpayCredentials: GetRazorpayCredentials(),
+		ENV:       os.Getenv("ENV"),
+		DbConfig:  GetDbConfig(),
+		AppName:   os.Getenv("APP_NAME"),
+		AppPort:   os.Getenv("APP_PORT"),
 		LogConfig: GetLogConfig(),
 	}
 }
