@@ -40,8 +40,10 @@ func InitRouter(opts Options) *gin.Engine {
 	router.GET("/ping", func(c *gin.Context) { c.String(http.StatusOK, "pong") })
 	userHandler := handler.NewUserHandler(opts.Dependencies.UserService)
 	pgHandler := handler.NewPaymentGatewayHandler(opts.Dependencies.PaymentGatewayService)
+	webhookHandler := handler.NewWebhookHandler(opts.Dependencies.WebhookProcessorService)
 	InitUserRouter(router, &userHandler)
 	InitPgRouter(router, &pgHandler)
+	InitWebhookRouter(router, &webhookHandler)
 	return router
 }
 
@@ -52,7 +54,12 @@ func InitUserRouter(router *gin.Engine, handler *handler.UserHandler) {
 	//v1.POST("forgot-password", handler.ForgotPassword)
 }
 
+func InitWebhookRouter(router *gin.Engine, handler *handler.WebhookHandler) {
+	v1 := router.Group("epictectus/external/v1/")
+	v1.POST("leadsquared/webhook", handler.ProcessLeadsquaredActivityWebhook)
+}
+
 func InitPgRouter(router *gin.Engine, handler *handler.PgHandler) {
-	v1 := router.Group("epictectus/v1")
+	v1 := router.Group("epictectus/external/v1")
 	v1.POST("create-standard-payment-link", handler.CreateStandardPaymentLink)
 }

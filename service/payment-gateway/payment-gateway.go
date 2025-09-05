@@ -7,7 +7,6 @@ import (
 	"epictectus/blog"
 	"epictectus/clients"
 	"epictectus/config"
-	"epictectus/constants"
 	"epictectus/contract"
 	"epictectus/domain"
 	"epictectus/service/crm"
@@ -132,7 +131,7 @@ func (r *paymentGatewayService) CreateStandardPaymentLinkRazorpay(ctx context.Co
 			blog.InfoCtx(ctx, "info-fetched-lead", "lead_details", *leadDetails)
 			err := r.crmService.PostLeadActivityLeadsquared(ctx, contract.PostActivityLeadsquared{
 				RelatedProspectId: leadDetails.ProspectId,
-				ActivityEvent:     constants.RazorpayPaymentLinkActivityEventLeadsquared,
+				ActivityEvent:     int64(domain.PostRazorpayPaymentLink),
 				ActivityNote:      fmt.Sprintf("Payment link created for %s, for %d - %s, payment link is %s", req.CustomerContact, req.Amount/100, req.Currency, razorpayResponse.ShortUrl),
 				ProcessFilesAsync: true,
 				ActivityDateTime:  utils.GetCurrentUtcTimeInIso8086(),
