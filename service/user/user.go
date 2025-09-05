@@ -27,7 +27,7 @@ func NewUserService(userRepo repo.UserRepository) UserService {
 		userRepo: userRepo,
 	}
 	u.usernameToUserIdMap = &domain.UsernameToUserIdMap{M: make(map[string]int64)}
-	// Check if there are existing users on Db, if yes, populate them on the map
+	// Check if there are existing users on Db, if yes, populate them on the map, if no, we will create an empty map
 	// Existing in memory map gets cleared when we restart server
 	ctx, _ := gin.CreateTestContext(httptest.NewRecorder())
 	users, err := userRepo.GetAllUsers(ctx)
