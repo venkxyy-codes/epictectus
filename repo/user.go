@@ -1,12 +1,15 @@
 package repo
 
 import (
+	"context"
 	"epictectus/config"
 	"epictectus/domain"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 )
 
 type userRepository struct {
@@ -38,12 +41,21 @@ func (r *userRepository) GetUserByUserId(ctx *gin.Context, userId int64) (*domai
 }
 
 func (r *userRepository) GetAllUsers(ctx *gin.Context) ([]domain.User, error) {
+	cctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	filter := bson.D{}
-	opts := options.Find().SetSort(map[string]interface{}{"user_id": -1})
-	cursor, err := r.collection.Find(ctx, filter, opts)
-	var users []domain.User
-	if err = cursor.All(ctx, &users); err != nil {
-		return nil, err
+	opts := options.Find().SetSort(bson.D{{Key: "user_id", Value: -1}})
+
+	cur, err := r.collection.Find(cctx, filter, opts)
+	if err != nil {
+		return nil, fmt.Errorf("find users: %w", err)
 	}
-	return users, err
+	defer func() { _ = cur.Close(cctx) }()
+
+	var users []domain.User
+	if err := cur.All(cctx, &users); err != nil {
+		return nil, fmt.Errorf("cursor all: %w", err)
+	}
+	return users, nil
 }
