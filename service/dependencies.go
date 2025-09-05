@@ -7,12 +7,14 @@ import (
 	"epictectus/service/crm"
 	"epictectus/service/payment-gateway"
 	"epictectus/service/user"
+	webhookProcessor "epictectus/service/webhook_processor"
 )
 
 type ServerDependencies struct {
-	UserService           user.UserService
-	PaymentGatewayService payment_gateway.PaymentGatewayService
-	CrmService            crm.CrmService
+	UserService             user.UserService
+	PaymentGatewayService   payment_gateway.PaymentGatewayService
+	CrmService              crm.CrmService
+	WebhookProcessorService webhookProcessor.WebhookProcessorService
 }
 
 func InstantiateServerDependencies() *ServerDependencies {
@@ -21,9 +23,11 @@ func InstantiateServerDependencies() *ServerDependencies {
 	userServ := user.NewUserService(userRepo)
 	crmService := crm.NewCrmService()
 	paymentGatewayService := payment_gateway.NewPaymentGatewayService(crmService)
+	webhookProcessorService := webhookProcessor.NewWebhookProcessorService(crmService, paymentGatewayService)
 	return &ServerDependencies{
-		UserService:           userServ,
-		PaymentGatewayService: paymentGatewayService,
-		CrmService:            crmService,
+		UserService:             userServ,
+		PaymentGatewayService:   paymentGatewayService,
+		CrmService:              crmService,
+		WebhookProcessorService: webhookProcessorService,
 	}
 }
