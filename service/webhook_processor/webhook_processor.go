@@ -37,6 +37,7 @@ func (w *webhookProcessorService) HandleLeadsquaredWebhook(ctx context.Context, 
 		_ = w.paymentGatewayService.CreateStandardPaymentLinkRazorpay(ctx,
 			contract.CreateStandardPaymentLink{
 				Amount:          amount * 100, // converting to paise
+				ProspectId:      webhook.RelatedProspectId,
 				Currency:        webhook.Data.MxCustom2,
 				CustomerName:    webhook.Current.FirstName,
 				CustomerContact: webhook.Current.Phone,
