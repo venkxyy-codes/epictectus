@@ -10,6 +10,7 @@ import (
 type CreateStandardPaymentLink struct {
 	Amount          int64  `json:"amount"`
 	Currency        string `json:"currency"`
+	ProspectId      string `json:"prospect_id"`
 	CustomerName    string `json:"customer_name"`
 	CustomerContact string `json:"customer_contact"`
 	CustomerEmail   string `json:"customer_email"`

@@ -123,14 +123,17 @@ func (r *paymentGatewayService) CreateStandardPaymentLinkRazorpay(ctx context.Co
 		}
 		switch crmProvider {
 		case domain.Leadsquared:
-			leadDetails, fetchErr := r.crmService.FetchLeadByPhoneNumberLeadsquared(ctx, req.CustomerContact)
-			if fetchErr != nil {
-				blog.ErrorCtx(ctx, fetchErr, "err-fetch-lead-by-phone-number", "response", responseBody)
-				return fetchErr
+			if req.ProspectId == "" {
+				leadDetails, fetchErr := r.crmService.FetchLeadByPhoneNumberLeadsquared(ctx, req.CustomerContact)
+				if fetchErr != nil {
+					blog.ErrorCtx(ctx, fetchErr, "err-fetch-lead-by-phone-number", "response", responseBody)
+					return fetchErr
+				}
+				blog.InfoCtx(ctx, "info-fetched-lead", "lead_details", *leadDetails)
+				req.ProspectId = leadDetails.ProspectId
 			}
-			blog.InfoCtx(ctx, "info-fetched-lead", "lead_details", *leadDetails)
 			err := r.crmService.PostLeadActivityLeadsquared(ctx, contract.PostActivityLeadsquared{
-				RelatedProspectId: leadDetails.ProspectId,
+				RelatedProspectId: req.ProspectId,
 				ActivityEvent:     int64(domain.PostRazorpayPaymentLink),
 				ActivityNote:      fmt.Sprintf("Payment link created for %s, for %d - %s, payment link is %s", req.CustomerContact, req.Amount/100, req.Currency, razorpayResponse.ShortUrl),
 				ProcessFilesAsync: true,
