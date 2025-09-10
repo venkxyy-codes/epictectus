@@ -41,10 +41,10 @@ func populatePaymentGatewayConfig() map[domain.PaymentProvider]interface{} {
 	}
 }
 
-func NewPaymentGatewayService(crmService crm.CrmService) PaymentGatewayService {
+func NewPaymentGatewayService(crmService crm.CrmService, baseClient clients.BaseClient) PaymentGatewayService {
 	return &paymentGatewayService{
 		crmService:            crmService,
-		baseClient:            clients.NewBaseClient(),
+		baseClient:            baseClient,
 		paymentGatewayDetails: populatePaymentGatewayConfig(),
 	}
 }
