@@ -9,6 +9,7 @@ import (
 	"epictectus/config"
 	"epictectus/contract"
 	"epictectus/domain"
+	"epictectus/service/communication"
 	"epictectus/service/crm"
 	"epictectus/utils"
 	"epictectus/view"
@@ -21,12 +22,13 @@ import (
 
 type paymentGatewayService struct {
 	crmService            crm.CrmService
+	communicationService  communication.CommunicationService
 	baseClient            clients.BaseClient
 	paymentGatewayDetails map[domain.PaymentProvider]interface{}
 }
 
 type PaymentGatewayService interface {
-	CreateStandardPaymentLinkRazorpay(ctx context.Context, createStandardPaymentLinkRequest contract.CreateStandardPaymentLink, notifyCrm bool, crmProvider domain.CrmProvider) error
+	CreateStandardPaymentLinkRazorpay(ctx context.Context, createStandardPaymentLinkRequest contract.CreateStandardPaymentLink, notifyCrm bool, crmProvider domain.CrmProvider, notifyCustomer bool, whatsappProvider domain.WhatsappProvider) error
 }
 
 func populatePaymentGatewayConfig() map[domain.PaymentProvider]interface{} {
@@ -41,15 +43,16 @@ func populatePaymentGatewayConfig() map[domain.PaymentProvider]interface{} {
 	}
 }
 
-func NewPaymentGatewayService(crmService crm.CrmService) PaymentGatewayService {
+func NewPaymentGatewayService(crmService crm.CrmService, commService communication.CommunicationService, baseClient clients.BaseClient) PaymentGatewayService {
 	return &paymentGatewayService{
 		crmService:            crmService,
-		baseClient:            clients.NewBaseClient(),
+		communicationService:  commService,
+		baseClient:            baseClient,
 		paymentGatewayDetails: populatePaymentGatewayConfig(),
 	}
 }
 
-func (r *paymentGatewayService) CreateStandardPaymentLinkRazorpay(ctx context.Context, req contract.CreateStandardPaymentLink, notifyCrm bool, crmProvider domain.CrmProvider) error {
+func (r *paymentGatewayService) CreateStandardPaymentLinkRazorpay(ctx context.Context, req contract.CreateStandardPaymentLink, notifyCrm bool, crmProvider domain.CrmProvider, notifyCustomer bool, whatsappProvider domain.WhatsappProvider) error {
 	paymentGatewayDetails, ok := r.paymentGatewayDetails[domain.Razorpay]
 	if !ok {
 		return fmt.Errorf("err-payment-gateway-credentials-not-identified")
@@ -150,9 +153,28 @@ func (r *paymentGatewayService) CreateStandardPaymentLinkRazorpay(ctx context.Co
 			})
 			if err != nil {
 				blog.ErrorCtx(ctx, err, "err-posting-payment-link-to-lead-activity", "response", responseBody)
-				return err
 			}
 			blog.InfoCtx(ctx, "info-posted-activity-on-leadsquared")
+		}
+	}
+	if notifyCustomer {
+		// Send payment link to customer on whatsapp
+		if whatsappProvider == "" || !slices.Contains(domain.GetWhatsappProviders(), string(whatsappProvider)) {
+			return fmt.Errorf("err-whatsapp-provider-not-identified")
+		}
+		switch whatsappProvider {
+		case domain.Angoor:
+			err = r.communicationService.SendPaymentLinkToCustomerOnWhatsapp(ctx, contract.SendPaymentLinkToCustomer{
+				CustomerPhoneNumber:   req.CustomerContact,
+				PaymentLink:           razorpayResponse.ShortUrl,
+				PaymentAmount:         float64(req.Amount / 100),
+				LeadsquaredProspectId: req.ProspectId,
+			}, domain.Angoor)
+			if err != nil {
+				blog.ErrorCtx(ctx, err, "err-sending-payment-link-to-customer-on-whatsapp")
+				return err
+			}
+			blog.InfoCtx(ctx, "info-sent-payment-link-to-customer-on-whatsapp")
 		}
 	}
 	return nil

@@ -32,13 +32,13 @@ func (h *PgHandler) CreateStandardPaymentLink(ctx *gin.Context) {
 	requestContext = blog.SetValueInContext(requestContext, "paymentProvider", paymentProvider)
 	switch paymentProvider {
 	case string(domain.Razorpay):
-		err := h.paymentGatewayService.CreateStandardPaymentLinkRazorpay(requestContext, createStandardPaymentLinkRequest, true, domain.Leadsquared)
+		err := h.paymentGatewayService.CreateStandardPaymentLinkRazorpay(requestContext, createStandardPaymentLinkRequest, true, domain.Leadsquared, true, domain.Angoor)
 		if err != nil {
 			ctx.JSON(utils.RenderError(err, "err-payment-link-creation-failed"))
 			return
 		}
 	default:
-		err := h.paymentGatewayService.CreateStandardPaymentLinkRazorpay(requestContext, createStandardPaymentLinkRequest, true, domain.Leadsquared)
+		err := h.paymentGatewayService.CreateStandardPaymentLinkRazorpay(requestContext, createStandardPaymentLinkRequest, true, domain.Leadsquared, true, domain.Angoor)
 		if err != nil {
 			ctx.JSON(utils.RenderError(err, "err-payment-link-creation-failed"))
 			return

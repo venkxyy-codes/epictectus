@@ -3,7 +3,9 @@ package service
 import (
 	"epictectus/appcontext"
 	_ "epictectus/appcontext"
+	"epictectus/clients"
 	"epictectus/repo"
+	"epictectus/service/communication"
 	"epictectus/service/crm"
 	"epictectus/service/payment-gateway"
 	"epictectus/service/user"
@@ -21,8 +23,10 @@ func InstantiateServerDependencies() *ServerDependencies {
 	dbClient := appcontext.GetDBClient()
 	userRepo := repo.NewUserRepository(dbClient)
 	userServ := user.NewUserService(userRepo)
-	crmService := crm.NewCrmService()
-	paymentGatewayService := payment_gateway.NewPaymentGatewayService(crmService)
+	baseClient := clients.NewBaseClient()
+	crmService := crm.NewCrmService(baseClient)
+	commService := communication.NewCommService(baseClient)
+	paymentGatewayService := payment_gateway.NewPaymentGatewayService(crmService, commService, baseClient)
 	webhookProcessorService := webhookProcessor.NewWebhookProcessorService(crmService, paymentGatewayService)
 	return &ServerDependencies{
 		UserService:             userServ,

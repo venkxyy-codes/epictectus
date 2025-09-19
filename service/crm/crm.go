@@ -35,9 +35,9 @@ func populateCrmDetails() map[domain.CrmProvider]interface{} {
 	}
 }
 
-func NewCrmService() CrmService {
+func NewCrmService(baseClient clients.BaseClient) CrmService {
 	return &crmService{
-		baseClient: clients.NewBaseClient(),
+		baseClient: baseClient,
 		CrmDetails: populateCrmDetails(),
 	}
 }

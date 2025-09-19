@@ -44,6 +44,6 @@ func (w *webhookProcessorService) HandleLeadsquaredWebhook(ctx context.Context, 
 				CustomerEmail:   webhook.Current.EmailAddress,
 				NotifySms:       "true",
 				NotifyEmail:     "false",
-			}, true, domain.Leadsquared)
+			}, true, domain.Leadsquared, true, domain.Angoor)
 	}
 }
